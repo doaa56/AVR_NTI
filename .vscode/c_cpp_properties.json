@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "name": "windows-gcc-x64",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "C:/avr-gcc/avr/include"
+      ],
+      "defines": [
+        "F_CPU=8000000UL",
+        "__AVR_ATmega32__"
+      ],
+      "compilerPath": "C:/avr-gcc/bin/avr-gcc.exe",
+      "cStandard": "${default}",
+      "intelliSenseMode": "windows-gcc-x64",
+      "browse": {
+        "path": [
+          "${workspaceFolder}",
+          "C:/avr-gcc/avr/include"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "cppStandard": "${default}"
+    }
+  ],
+  "version": 4
+}

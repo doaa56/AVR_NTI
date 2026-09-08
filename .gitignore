@@ -1,0 +1,6 @@
+build/
+
+# Local editor and OS files
+.vscode/*.log
+.DS_Store
+Thumbs.db
