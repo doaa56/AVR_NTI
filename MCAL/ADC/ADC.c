@@ -9,6 +9,7 @@
 #include "STD_TYPES.h"
 #include "ADC_interface.h"
 #include "ADC_private.h"
+#include "string.h"
 
 /*
  * ADC_Init
@@ -17,6 +18,15 @@
  * 3. Write ADPS2:0, then set ADEN. Do not start a conversion yet.
  * 4. Target ADC clock 50..200 kHz (8 MHz / 64 = 125 kHz).
  */
+STD_ReturnType ADC_Init(uint8 Copy_u8Ref, uint8 Copy_u8Prescaler){
+    if ((Copy_u8Ref != ADC_REF_AREF && Copy_u8Ref != ADC_REF_AVCC && Copy_u8Ref != ADC_REF_INTERNAL_2V56) || (Copy_u8Prescaler < ADC_PRESC_2 || Copy_u8Prescaler > ADC_PRESC_128)) {
+        return E_NOK; // Invalid reference or prescaler
+    }
+    ADMUX= (Copy_u8Ref<<6) | (ADC_RIGHT_ADJUST<<5);
+    ADCSRA=(Copy_u8Prescaler & 0x07); // Set prescaler bits
+    ADCSRA |= (1 << ADCSRA_ADEN); // Enable ADC
+    return E_OK;
+}
 
 /*
  * ADC_ReadChannel
@@ -26,7 +36,17 @@
  * 4. Clear ADIF by writing 1 to it.
  * 5. Read ADCL then ADCH. Combine: reading = ADCL | ((uint16)ADCH << 8).
  */
-
+STD_ReturnType ADC_ReadChannel(uint8 Copy_u8Channel, uint16 *Copy_pu16Reading){
+    if ( Copy_u8Channel>ADC_CHANNEL_7|| Copy_pu16Reading == NULL) {
+        return E_NOK; // Invalid channel or NULL pointer
+    }
+    ADMUX |= (Copy_u8Channel & 0x1F); // Set channel
+    ADCSRA |= (1 << 6); // Start conversion
+    while ((ADCSRA & (1 << 4))==0); // Wait for conversion to finish
+    ADCSRA |= (1 << 4); // Clear ADIF    
+    *Copy_pu16Reading = ADCL | ((uint16)ADCH << 8); // Read result
+    return E_OK; 
+}
 /*
  * ADC_StartConversion
  * 1. Select the channel as above.

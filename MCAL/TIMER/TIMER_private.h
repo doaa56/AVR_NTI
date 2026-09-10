@@ -27,7 +27,20 @@
  *
  * 5. Remember: a flag is cleared by writing 1 to it (w1c).
  */
+#define TIMER0_REG_TCCR0  (*(volatile uint8*)0x53)
+#define TIMER0_REG_TCNT0  (*(volatile uint8*)0x52)
+#define TIMER0_REG_OCR0   (*(volatile uint8*)0x5C)
 
-/* TODO: map Timer0 / Timer1 / TIMSK / TIFR and the bit names. */
+#define TIMER1_REG_TCCR1A (*(volatile uint8*)0x4F)
+#define TIMER1_REG_TCCR1B (*(volatile uint8*)0x4E)
+#define TIMER1_REG_TCNT1  (*(volatile uint16*)0x4C)
+#define TIMER1_REG_OCR1A  (*(volatile uint16*)0x4A)
+#define TIMER1_REG_ICR1   (*(volatile uint16*)0x46)
+
+#define TIMSK_REG         (*(volatile uint8*)0x59)
+#define TIFR_REG          (*(volatile uint8*)0x58)
+
+
+/* TODO: map the bit names for each register. */
 
 #endif /* TIMER_PRIVATE_H */

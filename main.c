@@ -13,10 +13,23 @@
 #include "SevenSegment_interface.h"
 #include "KeyPad_interface.h"
 #include <util/delay.h>
-
+#include "ADC_interface.h"
+#include "GPIO_interface.h"
+#include "TIMER_interface.h"
 int main(void)
 {
-  KeyPad_Init(GPIO_PORTB);
+  GPIO_SetPinDirection(GPIO_PORTA, GPIO_PIN5, GPIO_OUTPUT);
+  TIMER0_Init();
+  
+  while(1){
+   GPIO_SetPinValue(GPIO_PORTA, GPIO_PIN5, GPIO_HIGH);
+   TIMER0_DelayMS(1000);
+   GPIO_SetPinValue(GPIO_PORTA, GPIO_PIN5, GPIO_LOW);
+   TIMER0_DelayMS(1000);
+  }
+
+
+ /* KeyPad_Init(GPIO_PORTB);
   SevenSegment_Init(GPIO_PORTA);
   uint8 pressedKey ;
   while(1){
@@ -31,7 +44,7 @@ int main(void)
     }
   
   }
-
+*/
 
   /*
   uint8 sevenseg = 0;
