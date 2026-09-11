@@ -56,4 +56,15 @@ STD_ReturnType EXTI_Disable(uint8 Copy_u8Int);
  */
 STD_ReturnType EXTI_ClearFlag(uint8 Copy_u8Int);
 
+/*
+ * Description : Register the function the ISR calls when the source fires.
+ *               Register it before EXTI_Init, so no edge can arrive with no
+ *               handler in place. Registering again replaces the old one.
+ * Parameters  : Copy_u8Int      — EXTI_INT0 / EXTI_INT1 / EXTI_INT2.
+ *               Copy_pfCallback — void function taking void, must not be NULL.
+ * Return      : E_NOK for an unknown source or a NULL function pointer.
+ */
+
+ typedef void (*EXTI_CallbackType)(void);
+STD_ReturnType EXTI_SetCallback(uint8 Copy_u8Int, EXTI_CallbackType Copy_pfCallback);
 #endif /* INTERRUPT_INTERFACE_H */

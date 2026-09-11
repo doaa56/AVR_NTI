@@ -10,22 +10,31 @@
 #define F_CPU 8000000UL
 
 #include "STD_TYPES.h"
-#include "SevenSegment_interface.h"
-#include "KeyPad_interface.h"
+#include "INTERRUPT_interface.h"
 #include <util/delay.h>
 #include "ADC_interface.h"
 #include "GPIO_interface.h"
 #include "TIMER_interface.h"
+
+void INT0_ISR(void);
+
 int main(void)
 {
   GPIO_SetPinDirection(GPIO_PORTA, GPIO_PIN5, GPIO_OUTPUT);
+  GPIO_SetPinDirection(GPIO_PORTA, GPIO_PIN6, GPIO_OUTPUT);
+  GPIO_SetPinDirection(GPIO_PORTD, GPIO_PIN2, GPIO_INPUT);
+
   TIMER0_Init();
-  
+  //callback->sense->enable source->enable global
+  EXTI_SetCallback(EXTI_INT0, INT0_ISR);
+  EXTI_SetSense(EXTI_INT0, EXTI_ANY_CHANGE);
+  EXTI_Enable(EXTI_INT0);
+  INTERRUPT_EnableGlobal();
+
   while(1){
-   GPIO_SetPinValue(GPIO_PORTA, GPIO_PIN5, GPIO_HIGH);
+   GPIO_TogglePinValue(GPIO_PORTA, GPIO_PIN5);
    TIMER0_DelayMS(1000);
-   GPIO_SetPinValue(GPIO_PORTA, GPIO_PIN5, GPIO_LOW);
-   TIMER0_DelayMS(1000);
+   
   }
 
 
@@ -101,4 +110,10 @@ int main(void)
 */
 
   return 0;
+}
+void INT0_ISR(void)
+{
+  // This function will be called when INT0 interrupt occurs
+  // You can add your code here to handle the interrupt
+  GPIO_TogglePinValue(GPIO_PORTA, GPIO_PIN6); // Toggle the value of pin PA6
 }

@@ -28,5 +28,20 @@
  */
 
 /* TODO: map MCUCR, MCUCSR, GICR, GIFR, SREG and the bit names. */
+#define MCUCR   (*((volatile uint8 *)0x55))
+#define MCUCSR  (*((volatile uint8 *)0x54))
+#define GICR    (*((volatile uint8 *)0x5B))
+#define GIFR    (*((volatile uint8 *)0x5A))
+#define SREG    (*((volatile uint8 *)0x5F))
+//sense bits
+#define ISC00 0
+#define ISC01 1
+#define ISC10 2
+#define ISC11 3
+#define ISC2 6
+// interrupt enable bits
+#define INT0 6
+#define INT1 7
+#define INT2 5
 
 #endif /* INTERRUPT_PRIVATE_H */
